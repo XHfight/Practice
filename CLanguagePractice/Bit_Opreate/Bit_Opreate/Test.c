@@ -5,7 +5,7 @@ extern unsigned int reverse_bit(unsigned int value);
 
 //3.编写一个宏将一个数的奇数位与偶数位交换
 #define BIT_SWAP(NUM) \
-	((NUM>>1)&0x55555555)+((NUM<<1)&0xAAAAAAAA))
+	(((NUM>>1)&0x55555555)+((NUM<<1)&0xAAAAAAAA))
 
 void TestDiff()
 {
