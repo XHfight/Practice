@@ -9,10 +9,6 @@ int KPower(int n, int k)  //k>=0µÄÇé¿ö
 	{
 		return 1;
 	}
-	else if(k == 1)
-	{
-		return n;
-	}
 	else
 	{
 		return n*KPower(n, k-1);
