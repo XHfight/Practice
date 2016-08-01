@@ -6,18 +6,14 @@
 */
 int DigitNum(int num)
 {
-	int sum = 0;
-	if(num/10 == 0)  //num只有一位的情况
+	if(num < 10)  //num只有一位的情况
 	{
-		sum = num;
-		return sum;
+		return num;
 	}
 	else
 	{
-		sum = (num%10) + DigitNum(num/10);
+		return (num%10) + DigitNum(num/10);
 	}
-
-	return sum;
 }
 
 int main()
