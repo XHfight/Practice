@@ -1,5 +1,7 @@
 #include "DoubleStack.h"
-#include <string>
+#include "QueueByTwoStack.h"
+#include "StackByTwoQueue.h"
+
 void TestDouStack() //测试一个数组实现两个栈
 {
 	DouStack<int> s1;
@@ -39,10 +41,43 @@ void TestDouStack() //测试一个数组实现两个栈
 
 }
 
+void TestQueueByTwoStack()
+{
+	Queue<int> q1;
+	q1.Push(1);
+	q1.Push(2);
+	q1.Push(3);
+	q1.Push(4);
 
+	cout << q1.Front() << endl;
+	cout << q1.Back() << endl;
+	q1.Pop();
+	cout << q1.Front() << endl;
+	cout << q1.Back() << endl;
+	cout << q1.Size() << endl;
+}
+
+
+void TestStackByTwoQueue()
+{
+	Stack<int> s1;
+	s1.Push(1);
+	s1.Push(2);
+	s1.Push(3);
+	s1.Push(4);
+	cout << s1.Size() << endl;
+	while (!s1.Empty())
+	{
+		cout << s1.Top() << endl;
+		s1.Pop();
+	}
+
+}
 int main()
 {
-	TestDouStack();
+	//TestDouStack();
+	//TestQueueByTwoStack();
+	TestStackByTwoQueue();
 	system("pause");
 	return 0;
 }
