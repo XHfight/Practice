@@ -14,6 +14,7 @@
 
 #include<iostream>
 #include<stack>
+#include<cassert>
 using namespace std;
 
 typedef int DataType;
@@ -83,7 +84,13 @@ public:
 	//缺点：改变了链表的结构
 	void ReversePrint3()
 	{
-		//链表逆置
+		_head = ReverseList();
+		Print();
+	}
+
+	//16:反转链表
+	Node* ReverseList()
+	{
 		Node* cur = _head;
 		Node* newHead = NULL;
 		while(cur)
@@ -93,14 +100,66 @@ public:
 			tmp->_next = newHead; 
 			newHead = tmp;
 		}
-		//打印
-		cur = newHead;
+		return newHead;
+	}
+	//打印链表
+	void Print()
+	{
+		Node* cur = _head;
 		while(cur)
 		{
 			cout << cur->_data << " ";
 			cur = cur->_next;
 		}
 		cout << endl;
+	}
+	Node* Find(DataType find)
+	{
+		Node* cur = _head;
+		while(cur)
+		{
+			if(cur->_data == find)
+			{
+				return cur;
+			}
+			cur = cur->_next;
+		}
+		return NULL;
+	}
+
+	//面试题13：在O(1)时间删除链表结点
+	//交换删除法
+	void DeleteNode(Node* pToBeDeleted)
+	{
+		if(pToBeDeleted == NULL)
+			return;
+		//如果删除的结点为尾结点
+		if(pToBeDeleted->_next == NULL)
+		{
+			if(pToBeDeleted == _head)
+			{
+				_head = NULL;
+			}
+			else
+			{
+				Node* cur = _head;
+				while(cur && cur->_next != pToBeDeleted)
+				{
+					cur = cur->_next;
+				}
+				if(cur)
+					cur->_next = NULL;
+			}
+			delete pToBeDeleted;
+			pToBeDeleted = NULL;
+			return;
+		}
+
+		Node* del = pToBeDeleted->_next;
+		pToBeDeleted->_data = pToBeDeleted->_next->_data;
+		pToBeDeleted->_next = pToBeDeleted->_next->_next;
+		delete del;
+		del = NULL;
 	}
 protected:
 	void _ReversePrint(Node* node)
@@ -117,7 +176,7 @@ protected:
 	Node* _head;
 };
 
-int main()
+void Test5()
 {
 	List l;
 	for(int i = 1; i <= 10; ++i)
@@ -127,5 +186,26 @@ int main()
 	l.ReversePrint1();
 	l.ReversePrint2();
 	l.ReversePrint3();
+}
+
+void Test13()
+{
+	List l;
+	for(int i = 1; i<=10; ++i)
+	{
+		l.PushBack(i);
+	}
+	ListNode* ret5 = l.Find(5);
+	l.DeleteNode(ret5);
+	ListNode* ret10 = l.Find(10);
+	l.DeleteNode(ret10);
+	ListNode* ret1 = l.Find(1);
+	l.DeleteNode(ret1);
+	l.Print();
+}
+int main()
+{
+	//Test5();
+	Test13();
 	return 0;
 }
