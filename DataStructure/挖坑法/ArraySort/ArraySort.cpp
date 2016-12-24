@@ -15,16 +15,39 @@
 using namespace std;
 
 //挖坑法
+
 void Swap(char* pArr, int* pPos, int n)
 {
 	int pitPos = 0; //挖坑的位置
 	char tmp = pArr[pitPos];   //挖坑:保存第一个位置的值	
 	int i  = pitPos; //当前排序位置的下标
+	int num = n;
 
-	while(--n)
+	while(--num)
 	{
-		pArr[i] = pArr[pPos[i]];
-		i = pPos[i];
+		size_t pos = i;//记录当前排序位置的下标，方便后面改pPos数组的值
+
+		if(pPos[i] == pitPos)//要填入的值刚好为坑的位置
+		{
+			pArr[i] = tmp; 
+			pPos[pos] = pos; //已经排序的位置将内容改为下标值
+
+			for(i = 0; i < n; ++i) //找下一个挖坑的位置
+			{
+				if(i != pPos[i])
+				{
+					tmp = pArr[i]; //挖坑
+					pitPos = i;
+					break;
+				}
+			}
+		}
+		else //正常情况
+		{
+			pArr[i] = pArr[pPos[i]];
+			i = pPos[i];
+			pPos[pos] = pos; //已经排序的位置将内容改为下标值
+		}
 	}
 	pArr[i] = tmp;
 }
@@ -69,8 +92,8 @@ void PrintArr(int* pArr, int n)
 int main()
 {
 	char arr[] = {'A', 'B', 'C', 'D', 'E'};
-	int pos[] = {3, 0, 1, 4, 2};
-	//int pos[] = {2, 0, 1, 4, 3};
+	//int pos[] = {3, 0, 1, 4, 2};
+	int pos[] = {2, 0, 1, 4, 3};
 	cout << "arr:";
 	PrintArr(arr, sizeof(arr)/sizeof(arr[0]));
 	cout << "pos:";
