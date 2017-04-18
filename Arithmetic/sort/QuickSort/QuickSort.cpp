@@ -59,7 +59,7 @@ void QuickSort(int *arr, int left, int right)
 {
 	if(left >= right)
 		return;
-	if(right-left+1 >= 13) //区间元素数量大于等于13，采用快排
+	if(right-left+1 >= 13) //优化二：区间元素数量大于等于13，采用快排
 	{
 		int key = arr[right];  //坑在最右边
 		int i = left, j = right;  //j为坑
