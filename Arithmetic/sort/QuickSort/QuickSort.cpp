@@ -55,24 +55,30 @@ size_t GetMid(int *arr, size_t left, size_t right)
 	}
 }
 //快排
-void QuickSort(int *arr, int left, int right)
+int Partition(int *arr, int left, int right)
+{
+	int key = arr[right];  //坑在最右边
+	int i = left, j = right;  //j为坑
+	while(i < j)
+	{
+		while(i < j && arr[i] <= key)//从左边开始找大
+			++i;
+		arr[j] = arr[i];   //i变为坑,没找到的话相当于把自己赋给自己了。
+		while(i < j && arr[j] >= key) //从右边找小
+			--j;
+		arr[i] = arr[j];  //j变为坑
+	}
+	arr[j] = key; //填坑
+	return j;
+}
+
+void QuickSort(int* arr, int left, int right)
 {
 	if(left >= right)
 		return;
 	if(right-left+1 >= 13) //优化二：区间元素数量大于等于13，采用快排
 	{
-		int key = arr[right];  //坑在最右边
-		int i = left, j = right;  //j为坑
-		while(i < j)
-		{
-			while(i < j && arr[i] <= key)//从左边开始找大
-				++i;
-			arr[j] = arr[i];   //i变为坑,没找到的话相当于把自己赋给自己了。
-			while(i < j && arr[j] >= key) //从右边找小
-				--j;
-			arr[i] = arr[j];  //j变为坑
-		}
-		arr[j] = key; //填坑
+		int j = Partition(arr, left, right);
 		QuickSort(arr, left, j-1);
 		QuickSort(arr, j+1, right);
 	}
@@ -81,7 +87,6 @@ void QuickSort(int *arr, int left, int right)
 		InsertSort(arr, right+1);
 	}
 }
-
 
 void Print(int *arr, size_t len)
 {
