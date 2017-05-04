@@ -11,8 +11,9 @@
 
 #include<iostream>
 #include<stack>
+#include<unistd.h>
+#include<stdlib.h>
 using namespace std;
-
 
 template<typename T>
 class CQueue
@@ -21,9 +22,25 @@ public:
 	CQueue(void){}
 	~CQueue(void){}
 
-	void appendTail(const T& node);
-	T deleteHead();
-
+	void Push(const T& node);
+	void Pop();
+	const T& Front()
+	{
+		if(stack2.empty())
+		{
+			while(!stack1.empty())
+			{
+				stack2.push(stack1.top());
+				stack1.pop();
+			}
+		}
+		if(stack2.size() == 0)
+		{
+			cout << "queue is empty" << endl;
+			exit(1);
+		}
+		return stack2.top();
+	}
 	void Print();
 	bool Empty()
 	{
@@ -35,14 +52,19 @@ private:
 };
 
 template <typename T>
-void CQueue<T>::appendTail(const T& node)
+void CQueue<T>::Push(const T& node)
 {
 	stack1.push(node);
 }
 
 template <typename T>
-T CQueue<T>::deleteHead()
+void CQueue<T>::Pop()
 {
+	if(stack1.empty() && stack2.empty())
+	{
+		cout << "queue is empty" << endl;
+		exit(2);
+	}
 	if(stack2.empty())
 	{
 		while(!stack1.empty())
@@ -51,9 +73,7 @@ T CQueue<T>::deleteHead()
 			stack1.pop();
 		}
 	}
-	T tmp = stack2.top();
 	stack2.pop();
-	return tmp;
 }
 
 template <typename T>
@@ -61,29 +81,29 @@ void CQueue<T>::Print()
 {
 	while(!Empty())
 	{
-		cout << deleteHead() << " ";
+		cout << Front() << " ";
+		Pop();
 	}
-
 	cout << endl;
 }
 
 int main()
 {
 	//CQueue<int> cq;
-	//cq.appendTail(1);
-	//cq.appendTail(2);
-	//cq.appendTail(3);
-	//cq.appendTail(4);
-	//cq.appendTail(5);
+	//cq.Push(1);
+	//cq.Push(2);
+	//cq.Push(3);
+	//cq.Push(4);
+	//cq.Push(5);
 	//cq.Print();
 	
 	CQueue<int> cq;
-	cq.appendTail(1);
-	cq.appendTail(2);
-	cq.appendTail(3);
-	cq.appendTail(4);
-	cq.deleteHead();
-	cq.appendTail(5);
+	cq.Push(1);
+	cq.Push(2);
+	cq.Push(3);
+	cq.Push(4);
+	cq.Pop();
+	cq.Push(5);
 	cq.Print();
 	return 0;
 }
