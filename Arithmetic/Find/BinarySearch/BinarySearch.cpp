@@ -13,6 +13,28 @@
 #include<iostream>
 using namespace std;
 
+/*非递归实现：
+ * class BinarySearch {
+ * public:
+ *int getPos(vector<int> A, int n, int val) {
+ *\//write code here
+ *int left = 0;
+ *int right = n;
+ *while(left <= right)
+ *{
+ *	int mid = left + (right-left)/2;
+ *	if(A[mid] == val)
+ *		return mid;
+ *  else if(val < A[mid])
+ *		right = mid-1;
+ *  else
+ *      left = mid+1;
+ * }
+ * return -1;
+ * }
+ * };
+ * /
+
 //递归实现
 int BinarySearch(int arr[], int val, int begin, int end)
 {
