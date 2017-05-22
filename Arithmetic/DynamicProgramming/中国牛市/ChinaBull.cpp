@@ -9,34 +9,25 @@
 */
 #include<iostream>
 #include<vector>
+#include<limits.h>
 #include<sstream>
 using namespace std;
+//解题思路：
+//将问题按天分解，用四个变量分别记录截至这天的第一次买入的最高收益，第一次卖出的最高收益，第二次买入的最高收益，第二次卖出的最高收益，循环n填就是，就是n天后的最高收益。
 
 int calculateMax(const vector<int>& prices)
 {
-	int first = 0;
-	int second = 0;
-	for(int i = 0; i < prices.size()-1; ++i)
+	int firBuy = INT_MIN, firSale = 0;
+	int secBuy = INT_MIN, secSale = 0;
+
+	for(int i = 0; i < prices.size(); ++i)
 	{
-		int max = 0;
-		for(int j = i+1; j < prices.size(); ++j)
-		{
-			int earn = prices[j] - prices[i];
-			if( earn > 0)
-			{
-				if(earn > max)
-					max = earn;
-			}
-		}
-		if(max > first)
-		{
-			second = first;
-			first = max;
-		}
-		else if(max > second)
-			second = max;
+		firBuy = (firBuy > -prices[i]) ? firBuy : -prices[i];
+		firSale = (firSale > (firBuy+prices[i])) ? firSale : (firBuy+prices[i]);
+		secBuy = (secBuy > (firSale-prices[i])) ? secBuy : (firSale-prices[i]);
+		secSale = (secSale > (secBuy+prices[i])) ? secSale : (secBuy+prices[i]);
 	}
-	return first+second;
+	return secSale;
 }
 
 int main()
