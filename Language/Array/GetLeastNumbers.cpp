@@ -43,12 +43,7 @@ vector<int> GetLeastNumbers_Solution(vector<int> input, int k)
 		index = Partation(input, begin, end);
 	}
 
-	vector<int> output;
-	output.resize(k);
-	for(int i = 0; i < k; ++i)
-	{
-		output[i] = input[i];
-	}	
+	vector<int> output(input.begin(), input.begin()+k);
 	return output;
 }
 
