@@ -12,7 +12,8 @@
 #include<vector>
 using namespace std;
 
-//思路1：采用快排的partation函数，分出k左右的数字。
+//思路1：全排序，取前k O(N*logN)
+//思路2：采用快排的partation函数，分出k左右的数字。O(N)
 int Partation(vector<int> &arr, int begin, int end)
 {
 	int key = arr[end];
@@ -29,8 +30,33 @@ int Partation(vector<int> &arr, int begin, int end)
 	return begin;
 }
 
-vector<int> GetLeastNumbers_Solution(vector<int> input, int k)
+void QuickSort(vector<int> &arr, int begin, int end)
 {
+	if(begin < end)
+	{
+		int index = Partation(arr, begin, end);
+		QuickSort(arr, begin, index-1);
+		QuickSort(arr, index+1, end);
+	}
+}
+
+//思路1
+vector<int> GetLeastNumbers_Solution1(vector<int> &input, int k)
+{
+	//一定注意边界检测
+	if(input.size() < k || k <= 0)
+		return vector<int>();
+	//排序：快排
+	QuickSort(input, 0, input.size()-1);
+	vector<int> output(input.begin(), input.begin()+k);
+	return output;
+}
+
+//思路2
+vector<int> GetLeastNumbers_Solution2(vector<int> &input, int k)
+{
+	if(input.size() < k || k <= 0)
+		return vector<int>();
 	int begin = 0;
 	int end = input.size()-1;
 	int index = Partation(input, begin, end);
@@ -54,7 +80,8 @@ int main()
 	int k;
 	cin >> k;
 	
-	vector<int> output = GetLeastNumbers_Solution(input, k);
+	vector<int> output = GetLeastNumbers_Solution1(input, k);
+	//vector<int> output = GetLeastNumbers_Solution2(input, k);
 	vector<int>::iterator it = output.begin();
 	while(it != output.end())
 	{
