@@ -10,10 +10,15 @@
  */
 #include<iostream>
 #include<vector>
+#include<algorithm>
+#include<set>
 using namespace std;
 
 //思路1：全排序，取前k O(N*logN)
 //思路2：采用快排的partation函数，分出k左右的数字。O(N)
+//思路3：（适用于海量数据）创建一个大小为k的容器，每次与容器内的最大值进行比较，如果大于最大值则丢弃。O(N*logK)
+// (1).利用堆实现容器，建大堆
+// (2).利用红黑树实现容器
 int Partation(vector<int> &arr, int begin, int end)
 {
 	int key = arr[end];
@@ -73,6 +78,54 @@ vector<int> GetLeastNumbers_Solution2(vector<int> &input, int k)
 	return output;
 }
 
+//思路3.1
+vector<int> GetLeastNumbers_Solution3(vector<int> input, int k)
+{
+	if(input.size() < k || k <= 0)
+		return vector<int>();
+	vector<int> output(input.begin(), input.begin()+k);
+	make_heap(output.begin(), output.end());
+	
+	for(int i = k; i < input.size(); ++i)
+	{
+		if(input[i] < output[0])
+		{
+			pop_heap(output.begin(), output.end());
+			output.pop_back();
+
+			output.push_back(input[i]);
+			push_heap(output.begin(), output.end());
+		}
+	}
+	return output;
+}
+
+//思路3.2
+vector<int> GetLeastNumbers_Solution3_2(vector<int> input, int k)
+{
+	if(input.size() < k || k <= 0)
+		return vector<int>();
+	multiset<int, greater<int> >  leastNumbers;
+	vector<int>::const_iterator it = input.begin();
+	for( ; it != input.end(); ++it)
+	{
+		if(leastNumbers.size() < k)
+			leastNumbers.insert(*it);
+		else
+		{
+			multiset<int, greater<int> >::iterator great = leastNumbers.begin();
+			if(*it < *great)
+			{
+				leastNumbers.erase(*great);
+				leastNumbers.insert(*it);
+			}
+		}
+	}
+	vector<int> output(leastNumbers.begin(), leastNumbers.end());
+	return output;
+}
+
+
 int main()
 {
 	int arr[] = {4, 5, 1, 6, 2, 7, 3, 8};
@@ -80,8 +133,10 @@ int main()
 	int k;
 	cin >> k;
 	
-	vector<int> output = GetLeastNumbers_Solution1(input, k);
+	//vector<int> output = GetLeastNumbers_Solution1(input, k);
 	//vector<int> output = GetLeastNumbers_Solution2(input, k);
+	//vector<int> output = GetLeastNumbers_Solution3(input, k);
+	vector<int> output = GetLeastNumbers_Solution3_2(input, k);
 	vector<int>::iterator it = output.begin();
 	while(it != output.end())
 	{
