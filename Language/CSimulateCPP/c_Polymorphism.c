@@ -11,17 +11,17 @@ typedef void (*PFUN) ();
 
 void fun_b()
 {
-	 printf("fun_b");
+	 printf("Base::fun\n");
 }
 
 void fun_d()
 {
-	printf("fun_d");
+	printf("Derive::fun\n");
 }
 
 struct Base
 {
-	PFUN* f;
+	PFUN f;
 	int _b;
 };
 
@@ -41,4 +41,8 @@ int main()
 	struct Base b;
 	b.f = fun_b;
 	fun(&b);
+
+	struct Derive d;
+	d._base.f = fun_d;
+	fun(&d._base);
 }
