@@ -38,6 +38,7 @@ void fun(struct Base *pb)
 
 int main()
 {
+	//多态：父类指针指向父类对象调用父类函数，指向子类对象调用子类函数
 	struct Base b;
 	b.f = fun_b;
 	fun(&b);
