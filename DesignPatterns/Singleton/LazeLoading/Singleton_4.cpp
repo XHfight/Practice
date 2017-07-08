@@ -12,6 +12,7 @@
 #include<pthread.h>
 using namespace std;
 
+//利用RAII思想，将加锁和解锁封装成一个类，构造时加锁，析构时解锁。
 class Mutex
 {
 public:
