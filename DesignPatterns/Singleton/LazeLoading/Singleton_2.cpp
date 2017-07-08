@@ -11,7 +11,6 @@
 #include<pthread.h>
 using namespace std;
 
-pthread_mutex_t mylock = PTHREAD_MUTEX_INITIALIZER;
 class Singleton
 {
 public:
@@ -19,13 +18,13 @@ public:
 	static Singleton* GetInstence()
 	{
 	
-		pthread_mutex_lock(&mylock);
+		pthread_mutex_lock(&_lock);
 		if(_instence == NULL)
 		{
 			_instence = new Singleton();
 			// 1.分配空间 2.调用构造函数 3.赋值
 		}
-		pthread_mutex_unlock(&mylock);
+		pthread_mutex_unlock(&_lock);
 		return _instence;
 	}
 	//删除唯一实例的接口
@@ -45,9 +44,12 @@ private:
 	Singleton& operator=(const Singleton &);
 private:
 	static Singleton* _instence;
+	//保证线程安全的互斥锁
+	static pthread_mutex_t _lock;
 };
 
 Singleton *Singleton::_instence = NULL;
+pthread_mutex_t Singleton::_lock = PTHREAD_MUTEX_INITIALIZER;
 
 int main()
 {
